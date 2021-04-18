@@ -322,7 +322,7 @@ def train(args, labeled_trainloader, unlabeled_trainloader, test_loader,
 
     model.train()
     for epoch in range(args.start_epoch, args.epochs):
-        if args.world_size > 1:
+        # if args.world_size > 1:
             
         if not args.no_progress:
             p_bar = tqdm(range(args.eval_step),
