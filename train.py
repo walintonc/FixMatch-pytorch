@@ -107,6 +107,7 @@ def main():
                         help='coefficient of unlabeled loss')
     parser.add_argument('--T', default=1, type=float,
                         help='pseudo label temperature')
+    parser.add_argument('--dropout', default=0.0, type=float, help='dropout')
     parser.add_argument('--threshold', default=0.95, type=float,
                         help='pseudo label threshold')
     parser.add_argument('--out', default='result',
@@ -122,18 +123,18 @@ def main():
                         "See details at https://nvidia.github.io/apex/amp.html")
     parser.add_argument("--local_rank", type=int, default=-1,
                         help="For distributed training: local_rank")
-    parser.add_argument('--no-progress', action='store_true',
-                        help="don't use progress bar")
+    parser.add_argument('--no-progress', action='store_true', help="don't use progress bar")
 
     args = parser.parse_args()
     global best_acc
 
     def create_model(args):
+        print(f"Using dropout = {args.dropout}")
         if args.arch == 'wideresnet':
             import models.wideresnet as models
             model = models.build_wideresnet(depth=args.model_depth,
                                             widen_factor=args.model_width,
-                                            dropout=0,
+                                            dropout=args.dropout,
                                             num_classes=args.num_classes)
         elif args.arch == 'resnext':
             import models.resnext as models
